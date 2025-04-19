@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@layer{
+    input{
+        outline: none;
+    }
+
+    body{
+        background-color: rgb(250, 250, 250);
+    }
+
+    form{
+        background-color: white;
+    }
+}
