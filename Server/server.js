@@ -7,7 +7,6 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const route = require('./Route/route');
 const passport = require('./Oauth/passport');
-const {createToken} = require('./Controller/controller')
 
 //env keys and imports
 const dotenv = require('dotenv');
@@ -64,7 +63,8 @@ app.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'ema
 
 app.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/login'}), function(req, res){
     console.log(req.user)
-    res.redirect('/')
+    let user = req.user
+    res.status(200).json({user: user})
 })
 
 app.use(route)
