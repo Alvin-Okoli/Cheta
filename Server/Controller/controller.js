@@ -1,7 +1,7 @@
 const {User} = require('../Model/user')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-const sign = process.env.JWTSIGN
+const secret = process.env.JWTSIGN
 
 const handleError = (err)=>{
     let errors = {email: '', password: ''}
@@ -26,19 +26,18 @@ const handleError = (err)=>{
     return errors
 }
 
-module.exports.createToken = (id)=>{
-    const token = jwt.sign({id}, sign, {expiresIn: 60*60*24*3})
+const createToken = (id)=>{
+    const token = jwt.sign({id}, secret, {expiresIn: 60*60*24*3})
     return token
 }
 
 module.exports.login = async (req, res)=>{
-    console.log(req)
     let {email, password} = req.body
     console.log(email, password)
 
     try{
         const user = await User.login(email, password)
-        console.log(user, sign)
+        console.log(user)
         const token = createToken(user._id)
         res.status(200).json({user, token})
     }
@@ -49,7 +48,7 @@ module.exports.login = async (req, res)=>{
 }
 
 module.exports.signup = async (req, res)=>{
-    const {email, password, firstName, middleName, lastname, birthday, gender, idNumber} = req.body
+    let {email, password, firstName, middleName, lastname, birthday, gender, idNumber} = req.body
 
     try{
         const user = await User.create({email, password, firstName, middleName, lastname, birthday, gender, idNumber})
@@ -61,4 +60,38 @@ module.exports.signup = async (req, res)=>{
     }
 }
 
+module.exports.getUser = async (req, res) =>{
+    let tokens = req.params.token
+    console.log('received user request from jwt token')
 
+    try{
+        let id = jwt.verify(tokens, secret)
+        let user = await User.findById(id.id)
+        if(!user){
+            return res.status(404).json({error: 'user not found'})
+        }
+        res.status(200).json({user})
+    }
+    catch(err){
+        res.status(500).json({error: 'internal server error'})
+    }
+} 
+
+module.exports.editProfile = async (req, res)=>{
+    let id = req.params.user
+    let update = req.body
+    console.log(id, req.body)
+
+    try{
+        let user = await User.findOneAndUpdate({_id: id}, update, {new: true})
+        console.log(user)
+        if(!user){
+            return res.status(404).json({error: 'user not found'})
+        }
+        res.status(200).json({user})
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({error: 'internal server error'})
+    }
+}

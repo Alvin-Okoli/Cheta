@@ -11,20 +11,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         minLength: 6
     },
-    firstName: {
-        type: String,
-        default: null
-    },
-    middleName: {
-        type: String, 
-        default: null    
-    },
-    lastName: {
+    username: {
         type: String,  
         default: null   
     },
     birthday: {
-        type: Number,
+        type: String,
         default: null     
     },
     gender: {
@@ -32,6 +24,18 @@ const userSchema = new mongoose.Schema({
         default: null 
     },
     idNumber: {
+        type: String,
+        default: null  
+    },
+    bio: {
+        type: String,
+        default: null  
+    },
+    phoneNumber: {
+        type: Number,
+        default: null  
+    },
+    location: {
         type: String,
         default: null  
     }

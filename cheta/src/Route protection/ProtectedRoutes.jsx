@@ -3,10 +3,10 @@ import {AuthContext} from "./AuthContext"
 import { Navigate } from "react-router"
 
 export const ProtectedRoute = ({children})=>{
-    const {token} = useContext(AuthContext)
+    const {token, user} = useContext(AuthContext)
 
-    if(!token){
-        return <Navigate to='/'/>
+    if(!token || !user){
+        return <Navigate to='/login'/>
     }
     return children
 }
