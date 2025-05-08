@@ -19,12 +19,6 @@ const app = express()
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cookieParser())
-app.use(session({
-    secret: sessionSecret,
-    resave: false,
-    saveUninitialized: false
-  }));
-
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -36,8 +30,6 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }))
-
-
 
 mongoose.connect(mongoKey).then(()=>{
     console.log('db connected')
@@ -52,10 +44,6 @@ app.listen(port, ()=>{
 
 app.get('/', (req, res)=>{
     res.status(200).json({name: 'Alvina😁'})
-})
-
-app.get('/login', (req, res)=>{
-    res.status(200).json({error: 'failrd request'})
 })
 
 app.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
