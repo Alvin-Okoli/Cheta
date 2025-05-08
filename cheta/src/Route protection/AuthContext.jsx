@@ -19,7 +19,7 @@ const AuthProvider = ({children})=>{
     const signup =  async (email, password) =>{//this function is used to login the user and set the token and user state
 
         try{
-            const response = await fetch('http://localhost:5000/signup', {
+            const response = await fetch('https://cheta-boqy.onrender.com/signup', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email, password})
@@ -36,7 +36,7 @@ const AuthProvider = ({children})=>{
 
         try{
             console.log(email, password)
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch('https://cheta-boqy.onrender.com/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email, password})
@@ -51,7 +51,7 @@ const AuthProvider = ({children})=>{
 
     const getUser = async (tokens)=>{//this is used to check if the user is logged in or not and get the user data in the login page
         try{
-            const res = await fetch('http://localhost:5000/user/${tokens}')
+            const res = await fetch('https://cheta-boqy.onrender.com/user/${tokens}')
             let client = await res.json()
             setUser(client.user)
         }
