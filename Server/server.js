@@ -19,13 +19,14 @@ const app = express()
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cookieParser())
-app.use(passport.initialize())
-app.use(passport.session())
 app.use(session({
     secret: sessionSecret,
     resave: false,
     saveUninitialized: false
   }));
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 //cors setup
 app.use(cors({
