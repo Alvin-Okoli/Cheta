@@ -25,7 +25,6 @@ const AuthProvider = ({children})=>{
             body: JSON.stringify({email, password})
         })
         const data = await response.json()
-        console.log(data)
         setUser(data.user)
         setToken(data.token)}
         catch(err){
@@ -43,7 +42,6 @@ const AuthProvider = ({children})=>{
             body: JSON.stringify({email, password})
         })
         const data = await response.json()
-        console.log(data)
         setUser(data.user)
         setToken(data.token)}
         catch(err){
@@ -53,9 +51,8 @@ const AuthProvider = ({children})=>{
 
     const getUser = async (tokens)=>{//this is used to check if the user is logged in or not and get the user data in the login page
         try{
-            const res = await fetch(`http://localhost:5000/user/${tokens}`)
+            const res = await fetch('http://localhost:5000/user/${tokens}')
             let client = await res.json()
-            console.log(client)
             setUser(client.user)
         }
         catch(err){

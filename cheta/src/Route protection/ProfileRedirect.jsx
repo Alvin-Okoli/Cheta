@@ -4,13 +4,11 @@ import { Navigate } from 'react-router'
 
 export function ProfileRedirect({children}){
     const {token, user, getUser} = useContext(AuthContext)
-    const [isLoading, setIsLoading] = useState(false)  
 
     useEffect(
         ()=>{
            const fetchUser = async ()=>{
-               if(token && !user && !isLoading){
-                   setIsLoading(true)
+               if(token && !user){
                    try{
                        getUser(token)
                    return <Navigate to='/' replace/>
@@ -18,17 +16,10 @@ export function ProfileRedirect({children}){
                    catch(err){
                        console.log(err)
                    }
-                   finally{
-                       setIsLoading(false)
-                   }
            }}
 
            fetchUser()
        }, [])
-
-       if(token && !user && isLoading){
-           return <div>Loading...</div>
-    }
     
     if(token && user){
         return <Navigate to='/' replace/>

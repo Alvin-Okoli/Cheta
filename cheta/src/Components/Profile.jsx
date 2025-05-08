@@ -1,13 +1,23 @@
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {AuthContext} from '../Route protection/AuthContext';
 import penImg from '../assets/pen-svgrepo-com.svg'
 
 export default function Profile(){
 
     const [edit, setEdit] = useState(false)
-    const [newUser, setNewUser] = useState({})
+    const [newUser, setNewUser] = useState({
+        username: '',
+        bio: '',
+        phoneNumber: '',
+        birthday: '',
+        location: '',
+        gender: ''
+    })
     let {user, setUser, logout} = useContext(AuthContext)
-    console.log(user)
+
+    useEffect(()=>{
+        setNewUser({...newUser, user})
+    }, [user])
 
     const editInput = ()=>{//this is to handle the edit button click
             setEdit(true)
@@ -32,7 +42,7 @@ export default function Profile(){
         console.log(changes, newUser)
 
         if(changes > 0){
-            const res = await fetch(`http://localhost:5000/update/${user._id}`, {
+            const res = await fetch('http://localhost:5000/update/${user._id}', {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(newUser)
@@ -42,7 +52,6 @@ export default function Profile(){
         }
 
         changes = 0
-        setNewUser({})
         setEdit(false)
     }
 
@@ -70,6 +79,7 @@ export default function Profile(){
                             <input 
                             type="text" 
                             name="username"
+                            value={newUser.username || user.username}
                             onChange={handleUpdate}
                             className='outline-8 border rounded-2xl px-3'
                             />
@@ -88,6 +98,7 @@ export default function Profile(){
                             <input 
                             type="text" 
                             name='bio'
+                            value={newUser.bio || user.bio}
                             onChange={handleUpdate}
                             className='outline-8 border rounded-2xl px-3'
                             />
@@ -101,6 +112,7 @@ export default function Profile(){
                             <input 
                             type="text" 
                             name='phoneNumber'
+                            value={newUser.phoneNumber || user.phoneNumber}
                             onChange={handleUpdate}
                             className='outline-8 border rounded-2xl px-3'
                             />
@@ -114,6 +126,7 @@ export default function Profile(){
                             <input 
                             type="text" 
                             name='birthday'
+                            value={newUser.birthday || user.birthday}
                             onChange={handleUpdate}
                             className='outline-8 border rounded-2xl px-3'
                             />
@@ -127,6 +140,7 @@ export default function Profile(){
                             <input 
                             type="text" 
                             name='location'
+                            value={newUser.location || user.location}
                             onChange={handleUpdate}
                             className='outline-8 border rounded-2xl px-3'
                             />
@@ -140,6 +154,7 @@ export default function Profile(){
                             <input 
                             type="text" 
                             name='gender'
+                            value={newUser.gender || user.gender}
                             onChange={handleUpdate}
                             className='outline-8 border rounded-2xl px-3'
                             />
