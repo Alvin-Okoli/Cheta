@@ -42,7 +42,7 @@ export default function Profile(){
         console.log(changes, newUser)
 
         if(changes > 0){
-            const res = await fetch('http://localhost:5000/update/${user._id}', {
+            const res = await fetch('https://cheta-boqy.onrender.com/update/${user._id}', {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(newUser)
