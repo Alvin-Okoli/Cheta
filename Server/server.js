@@ -29,7 +29,7 @@ app.use(session({
 
 //cors setup
 app.use(cors({
-    origin,
+    origin: 'https://cheta-nine.vercel.app',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE']
