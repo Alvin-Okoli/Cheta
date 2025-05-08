@@ -38,7 +38,7 @@ module.exports.login = async (req, res)=>{
     try{
         let user = await User.login(email, password)
         const token = createToken(user._id)
-        user = user.toObject({getters: true, password: false})
+        user = user.toObject({getters: true, password: false, _id: false})
         res.status(200).json({user, token})
     }
     catch(err){
@@ -53,7 +53,7 @@ module.exports.signup = async (req, res)=>{
     try{
         let user = await User.create({email, password, firstName, middleName, lastname, birthday, gender, idNumber})
         const token = createToken(user._id)
-        user = user.toObject({getters: true, password: false})
+        user = user.toObject({getters: true, password: false, _id: false})
         res.status(200).send({user, token})
     }
     catch(err){
