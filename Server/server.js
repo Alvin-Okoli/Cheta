@@ -9,11 +9,10 @@ const route = require('./Route/route');
 const passport = require('./Oauth/passport');
 
 //env keys and imports
-const dotenv = require('dotenv');
-dotenv.config();
-const port = process.env.port
+const port = process.env.PORT
 const mongoKey = process.env.MONGOKEY
 const sessionSecret = process.env.SESSIONSECRET
+const origin = process.env.ORIGIN
 
 //middleware
 const app = express()
@@ -32,7 +31,7 @@ app.use(passport.session())
 
 //cors setup
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin,
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE']
