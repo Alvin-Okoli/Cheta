@@ -1,5 +1,5 @@
 import { Navigate, NavLink, Outlet, redirect, useNavigate } from 'react-router'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from '../Route protection/AuthContext'
 
 //assets
@@ -11,7 +11,7 @@ import eyesCloseImg from '../assets/eye-closed-svgrepo-com.svg'
 
 export default function Signup(){
     const [showPassword, setShowPassword] = useState(false)
-    let {signup} = useContext(AuthContext)
+    let {signup, getUser, token} = useContext(AuthContext)
     const navigate = useNavigate()
     const [ formData, setFormData] = useState({
         email: '',
@@ -30,6 +30,10 @@ export default function Signup(){
         }
     }
 
+    useEffect(()=>{
+        getUser(token)
+    }, [])
+
     const handleChange = (e)=>{
         let {name, value} = e.target;
         setFormData({
@@ -39,9 +43,7 @@ export default function Signup(){
     }
 
     const showPass = ()=>{
-        if (showPassword === false){
-            setShowPassword(true)
-        } else setShowPassword(false)
+        setShowPassword(!showPassword)
     }
 
     return(
@@ -91,16 +93,16 @@ export default function Signup(){
 
                     <>
                         <div className='text-center'>
-                            <div className='my-12 border px-4 py-1 rounded-4xl bg-black text-white md:w-50 md:mx-auto' onClick={handleSubmit}>
+                            <button className='my-12 border px-4 py-2 rounded-4xl bg-black text-white cursor-pointer md:w-50 md:mx-auto' onClick={handleSubmit}>
                                 Sign up
-                            </div>
+                            </button>
                         </div>
                     </>
                     
 
                     
 
-                    <div className='text-center my-20'>Already have an account? <NavLink to='/login' className='underline'>Sign in instead</NavLink></div>
+                    <div className='text-center my-16'>Already have an account? <NavLink to='/login' className='underline'>Sign in instead</NavLink></div>
                 </form>
             </div>
             <Outlet/>

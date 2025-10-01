@@ -1,5 +1,5 @@
 import { useNavigate, NavLink, Outlet, redirect } from 'react-router'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from '../Route protection/AuthContext'
 
 //assets
@@ -27,30 +27,31 @@ import eyesCloseImg from '../assets/eye-closed-svgrepo-com.svg'
 
 export default function Login(){
     const navigate = useNavigate()
-    const {login} = useContext(AuthContext)
+    const {login, token, getUser} = useContext(AuthContext)
     const [showPassword, setShowPassword] = useState(false)
     const [formData, setformData] = useState({
         email: "",
         password: ''
     })
 
-    const handleSubmit = async (e, hook)=>{
+    useEffect(()=>{
+            getUser(token)
+        }, [])
+
+    const handleSubmit = async (e)=>{
         e.preventDefault()
         console.log(formData)
         try{
             await login(formData.email, formData.password)
-            return hook()
+            return navigate('/')
         }
-
         catch(err){
             console.log(err)
         }
     }
 
     const showPass = ()=>{
-        if (showPassword === false){
-            setShowPassword(true)
-        } else setShowPassword(false)
+        setShowPassword(!showPassword)
     }
 
     const handleChange = (e)=>{
@@ -107,15 +108,12 @@ export default function Login(){
                     </div>
 
                     <div className='text-center'>
-                        <div className='my-12 border px-4 py-1 rounded-4xl bg-black text-white cursor-pointer md:w-50 md:mx-auto'>
-                            <button
-                            className='cursor-pointer'
-                            onClick={(e)=>{handleSubmit(e, ()=>{navigate('/')})}}
-                            >Sign in</button>
-                        </div>
+                        <button className='my-12 border px-4 py-2 rounded-4xl bg-black text-white cursor-pointer md:w-50 md:mx-auto' onClick={handleSubmit}
+                            >Sign in
+                        </button>
                     </div>
 
-                    <div className='text-center my-20'>Dont have an account yet? <a href='signup' className='underline'>Sign up</a></div>
+                    <div className='text-center my-16'>Dont have an account yet? <NavLink to='/signup' className='underline'>Sign up</NavLink></div>
                 </form>
             </div>
             <Outlet/>

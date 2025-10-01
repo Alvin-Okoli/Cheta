@@ -48,6 +48,7 @@ module.exports.login = async (req, res)=>{
 }
 
 module.exports.signup = async (req, res)=>{
+    console.log(req.body)
     let {email, password, firstName, middleName, lastname, birthday, gender, idNumber} = req.body
 
     try{
@@ -57,16 +58,21 @@ module.exports.signup = async (req, res)=>{
         res.status(200).send({user, token})
     }
     catch(err){
+        console.log(err)
         res.status(400).json(handleError(err))
     }
 }
 
 module.exports.getUser = async (req, res) =>{
-    let tokens = req.params.token
-    console.log('received user request from jwt token')
+    let token = req.params.token
+    console.log('received user request from jwt token :', tokens)
+
+    if(token === 'undefined'){
+        return res.status(401).json({error: 'no token provided'})
+    }
 
     try{
-        let id = jwt.verify(tokens, secret)
+        let id = jwt.verify(token, secret)
         let user = await User.findById(id.id)
         if(!user){
             return res.status(404).json({error: 'user not found'})
@@ -74,6 +80,15 @@ module.exports.getUser = async (req, res) =>{
         res.status(200).json({user})
     }
     catch(err){
+        console.log(err.message)
+
+        if(err.name === 'JsonWebTokenError'){
+            return res.status(401).json({error: 'invalid token'})
+        }
+        if(err.name === 'TokenExpiredError'){
+            return res.status(401).json({error: 'token expired'})
+        }
+
         res.status(500).json({error: 'internal server error'})
     }
 } 

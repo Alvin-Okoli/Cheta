@@ -3,10 +3,32 @@ import Cookies from 'js-cookie'
 
 const AuthContext = createContext()
 
+const startServer = async ()=>{
+    try{
+        const response = await fetch('https://cheta-boqy.onrender.com/')
+        const data = await response.json()
+        console.log(data)
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 const AuthProvider = ({children})=>{
 
     const [token, setToken] = useState(Cookies.get('token'))
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState({
+        username: '',
+        bio: '',
+        phoneNumber: '',
+        birthday: '',
+        location: '',
+        gender: ''
+    })
+
+    useEffect(()=>{
+        startServer()
+    }, [])
 
     useEffect(()=>{//used to set the token in the cookies when the user logs in and remove it when the user logs out
         if(token){
@@ -49,14 +71,17 @@ const AuthProvider = ({children})=>{
         }
     }
 
-    const getUser = async (tokens)=>{//this is used to check if the user is logged in or not and get the user data in the login page
-        try{
-            const res = await fetch('https://cheta-boqy.onrender.com/user/${tokens}')
-            let client = await res.json()
-            setUser(client.user)
-        }
-        catch(err){
-            console.log(err)
+    const getUser = async (token)=>{//this is used to check if the user is logged in or not and get the user data in the login page
+        if(token){
+            try{
+                const res = await fetch(`https://cheta-boqy.onrender.com/user/${token}`)
+                let client = await res.json()
+                setUser(client.user)
+                console.log(client.user)
+            }
+            catch(err){
+                console.log(err)
+            }
         }
     }    
     
