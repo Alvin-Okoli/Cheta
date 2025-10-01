@@ -1,15 +1,15 @@
-#*Overview*
+# *Overview*
 
-#*Features*
+# *Features*
 
-#*Tech Stack*
+# *Tech Stack*
 
-#*Screenshots*
+# *Screenshots*
 
-#*Getting Started*
+# *Getting Started*
 
-#*Folder Structure*
+# *Folder Structure*
 
-#*Deployment*
+# *Deployment*
 
-#*Contributing*
+# *Contributing*

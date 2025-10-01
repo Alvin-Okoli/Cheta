@@ -5,7 +5,7 @@ const AuthContext = createContext()
 
 const startServer = async ()=>{
     try{
-        const response = await fetch('https://cheta-boqy.onrender.com/')
+        const response = await fetch('https://cheta-boqy.onrender.com')
         const data = await response.json()
         console.log(data)
     }
