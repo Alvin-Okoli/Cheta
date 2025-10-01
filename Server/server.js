@@ -31,7 +31,7 @@ app.use(cookieParser())
 
 //cors setup
 app.use(cors({
-    origin:'https://cheta-boqy.onrender.com',
+    origin:'https://cheta-nine.vercel.app',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE']
