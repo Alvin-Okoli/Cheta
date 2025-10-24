@@ -67,7 +67,7 @@ export default function Login(){
         <>
             <div id="pageContainer">
 
-                <form className='px-5 pt-0.5 md:w-100 md:shadow md:mx-auto md:pb-10 md:mt-10'>
+                <form className='px-5 pt-10 md:w-100 md:shadow md:mx-auto md:pb-10 md:mt-10 rounded-2xl'>
 
                     <div className='text-center mt-5 mb-20 text-5xl font-bold'>Cheta</div>
 
@@ -107,10 +107,14 @@ export default function Login(){
                         </button>
                     </div>
 
-                    <div className='text-center'>
-                        <button className='my-12 border px-4 py-2 rounded-4xl bg-black text-white cursor-pointer md:w-50 md:mx-auto' onClick={handleSubmit}
+                    <div className='text-center my-12'>
+                        <button className='my-4 border px-4 py-2 rounded-4xl bg-black text-white cursor-pointer md:w-50 md:mx-auto' onClick={handleSubmit}
                             >Sign in
                         </button>
+
+                        <div>
+                            <NavLink to='/forgotPassword' className="font-semibold hover:underline">Forgot Password?</NavLink>
+                        </div>
                     </div>
 
                     <div className='text-center my-16'>Dont have an account yet? <NavLink to='/signup' className='underline'>Sign up</NavLink></div>

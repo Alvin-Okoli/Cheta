@@ -17,14 +17,7 @@ const startServer = async ()=>{
 const AuthProvider = ({children})=>{
 
     const [token, setToken] = useState(Cookies.get('token'))
-    const [user, setUser] = useState({
-        username: '',
-        bio: '',
-        phoneNumber: '',
-        birthday: '',
-        location: '',
-        gender: ''
-    })
+    const [user, setUser] = useState(null)
 
     useEffect(()=>{
         startServer()
@@ -41,7 +34,7 @@ const AuthProvider = ({children})=>{
     const signup =  async (email, password) =>{//this function is used to login the user and set the token and user state
 
         try{
-            const response = await fetch('https://cheta-boqy.onrender.com/signup', {
+            const response = await fetch('https://localhost:3000/signup', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email, password})
@@ -58,7 +51,7 @@ const AuthProvider = ({children})=>{
 
         try{
             console.log(email, password)
-            const response = await fetch('https://cheta-boqy.onrender.com/login', {
+            const response = await fetch('https://localhost:3000', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email, password})
@@ -74,7 +67,7 @@ const AuthProvider = ({children})=>{
     const getUser = async (token)=>{//this is used to check if the user is logged in or not and get the user data in the login page
         if(token){
             try{
-                const res = await fetch(`https://cheta-boqy.onrender.com/user/${token}`)
+                const res = await fetch(`https://localhost:3000/user/${token}`)
                 let client = await res.json()
                 setUser(client.user)
                 console.log(client.user)

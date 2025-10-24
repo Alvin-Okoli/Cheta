@@ -1,6 +1,10 @@
-const {User} = require('../Model/user')
-const jwt = require('jsonwebtoken')
-require('dotenv').config()
+const {User} = require('../Model/user');
+const {Otp} = require('../Model/OTP');
+const sendEmail = require('../nodemailer')
+const jwt = require('jsonwebtoken');
+
+// Load environment variables
+require('dotenv').config();
 const secret = process.env.JWTSIGN
 
 const handleError = (err)=>{
@@ -26,11 +30,13 @@ const handleError = (err)=>{
     return errors
 }
 
+// Creates JWT token
 const createToken = (id)=>{
     const token = jwt.sign({id}, secret, {expiresIn: 60*60*24*3})
     return token
 }
 
+// Handles login logic
 module.exports.login = async (req, res)=>{
     let {email, password} = req.body
     console.log(email, password)
@@ -47,6 +53,7 @@ module.exports.login = async (req, res)=>{
     }
 }
 
+// Handles signup logic
 module.exports.signup = async (req, res)=>{
     console.log(req.body)
     let {email, password, firstName, middleName, lastname, birthday, gender, idNumber} = req.body
@@ -63,9 +70,10 @@ module.exports.signup = async (req, res)=>{
     }
 }
 
+// Handles automatic redirection
 module.exports.getUser = async (req, res) =>{
     let token = req.params.token
-    console.log('received user request from jwt token :', tokens)
+    console.log('received user request from jwt token :', token)
 
     if(token === 'undefined'){
         return res.status(401).json({error: 'no token provided'})
@@ -93,6 +101,7 @@ module.exports.getUser = async (req, res) =>{
     }
 } 
 
+// Handles profile update
 module.exports.editProfile = async (req, res)=>{
     let id = req.params.user
     let update = req.body
@@ -109,5 +118,43 @@ module.exports.editProfile = async (req, res)=>{
     catch(err){
         console.log(err)
         res.status(500).json({error: 'internal server error'})
+    }
+}
+
+
+//Handles OTP creation
+module.exports.getOTP = async (req, res) => {
+    const {email, channel} = req.body;
+    console.log('OTP request for email:', email, 'via channel:', channel);
+    try{
+        const {otp} = await Otp.generateOtp(email, channel)
+        const otpInfo = await sendEmail({
+            to: email,
+            subject: 'Your OTP Code',
+            html: `<h3>Your OTP Code is: <h1>${otp}</h1> and is valid for 10 minutes.<h3>`,
+            text: `Your OTP Code is: ${otp} and is valid for 10 minutes.`
+        })
+        res.status(200).json({message: 'OTP sent successfully', otp, otpInfo})
+    }
+    catch(err){
+        console.error(err)
+        res.status(500).json({error: 'Failed to generate OTP' })
+    }
+}
+
+//Handles OTP verification
+module.exports.verifyOTP = async (req, res) => {
+    const {email, otp} = req.body;
+    console.log('Verifying OTP for email:', email, ' with OTP:', otp);
+    try{
+        const result = await Otp.verifyOtp(email, otp)
+        if(result.success){
+            res.status(200).json({message: result.message})
+        }else{
+            res.status(400).json({error: result.message})
+        }
+    }catch(err){
+        console.error(err)
+        res.status(500).json({error: 'Failed to verify OTP' })
     }
 }
