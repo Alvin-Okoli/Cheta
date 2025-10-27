@@ -34,7 +34,7 @@ const AuthProvider = ({children})=>{
     const signup =  async (email, password) =>{//this function is used to login the user and set the token and user state
 
         try{
-            const response = await fetch('https://localhost:3000/signup', {
+            const response = await fetch('https://cheta-nine.vercel.app/signup', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email, password})
@@ -51,7 +51,7 @@ const AuthProvider = ({children})=>{
 
         try{
             console.log(email, password)
-            const response = await fetch('https://localhost:3000', {
+            const response = await fetch('https://cheta-nine.vercel.app/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email, password})
@@ -67,7 +67,7 @@ const AuthProvider = ({children})=>{
     const getUser = async (token)=>{//this is used to check if the user is logged in or not and get the user data in the login page
         if(token){
             try{
-                const res = await fetch(`https://localhost:3000/user/${token}`)
+                const res = await fetch(`https://cheta-nine.vercel.app/user/${token}`)
                 let client = await res.json()
                 setUser(client.user)
                 console.log(client.user)
