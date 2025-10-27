@@ -31,7 +31,7 @@ app.use(cookieParser())
 
 //cors setup
 app.use(cors({
-    origin:process.env.CHETA,
+    origin,
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE']
